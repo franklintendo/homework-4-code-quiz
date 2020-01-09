@@ -30,6 +30,9 @@
 
                     <button onclick="startQuiz()" class="btn btn-primary">Start the quiz</button>
                 </div>
+                <div id="choices-menu">
+
+                </div>
             </main>
         </div>
     </div>
@@ -39,7 +42,7 @@
         // Variables of elements, array data, etc. 
         // referred to in the functions
         var numberOfQuestions = questions.length;
-        var mainContent = document.querySelector("main");
+        var choicesContent = document.querySelector("#choices-menu");
         var startMenu = document.getElementById('start-menu');
         var questionHeading = document.getElementById('heading1');
         var questionNumber = 0;
@@ -60,11 +63,13 @@
                         alert('you win!');
                         questionNumber++;
                         questionHeading.textContent = questions[questionNumber].title;
+                        choicesContent.innerHTML = " ";
                         listChoices();
                     } else {
                         alert('you lose!');
                         questionNumber++;
                         questionHeading.textContent = questions[questionNumber].title;
+                        choicesContent.innerHTML = " ";
                         listChoices();
                     }
                 }
@@ -84,7 +89,7 @@
                 choiceBtn.setAttribute("class", "btn btn-primary btn-sm d-block my-2 choice-btn");
                 choiceBtn.setAttribute("id", "choice-" + i );
                 choiceBtn.textContent = questions[questionNumber].choices[i];
-                mainContent.appendChild(choiceBtn);
+                choicesContent.appendChild(choiceBtn);
 
                 // var choiceID = document.getElementById("choice-" + i);
 
