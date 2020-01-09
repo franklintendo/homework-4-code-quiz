@@ -39,20 +39,28 @@
     <script type="text/javascript" src="assets/questions.js"></script>
     <script>
 
-        // Variables of elements, array data, etc. 
-        // referred to in the functions
-        var numberOfQuestions = questions.length;
+        // Variables of elements on page
         var choicesContent = document.querySelector("#choices-menu");
         var startMenu = document.getElementById('start-menu');
         var questionHeading = document.getElementById('heading1');
-        var questionNumber = 0;
+
+        // Variable containing question array data
+        // referred to in the functions
+        var numberOfQuestions = questions.length;
         var questionChoices = questions[questionNumber].choices;
 
+        // Default numbers for the game
+        // to start at first question, setting time, etc.
+        var questionNumber = 0;
+       
         // Function for when user clicks the start button
         function startQuiz() {
-            startMenu.setAttribute("style", "display: none;");
-            // console.log(questionChoices);
 
+            // Hide the default start menu
+            startMenu.setAttribute("style", "display: none;");
+
+            // Place first question in h1 and create buttons
+            // of the multiple choice answers below
             questionHeading.textContent = questions[questionNumber].title;
             listChoices();
 
@@ -60,17 +68,24 @@
             // user clicks matches the answer in the questions array
             document.addEventListener("click", function(event) {
                 if (event.target.matches('.choice-btn')) {
-                    // alert(event.target.textContent);
+                    
+                    // Condition if user selects correct answer
                     if (event.target.textContent === questions[questionNumber].answer) {
-                        alert('you win!');
+                        // Move on to the next question
                         questionNumber++;
                         questionHeading.textContent = questions[questionNumber].title;
+                        // Run function to clear buttons
+                        // and list new choices
                         choicesContent.innerHTML = " ";
                         listChoices();
-                    } else {
-                        alert('you lose!');
+                    } 
+                    // Condition if user selects wrong answer
+                    else {
+                        // Move on to the next question
                         questionNumber++;
                         questionHeading.textContent = questions[questionNumber].title;
+                        // Run function to clear buttons
+                        // and list new choices
                         choicesContent.innerHTML = " ";
                         listChoices();
                     }
@@ -93,26 +108,8 @@
                 choiceBtn.textContent = questions[questionNumber].choices[i];
                 choicesContent.appendChild(choiceBtn);
 
-                // var choiceID = document.getElementById("choice-" + i);
-
-                // console.log(choiceID);
-                // console.log(choiceBtn.textContent);
-                // console.log(questions[questionNumber].answer);
-
-                // choiceBtn.addEventListener("click", function() {
-                //     // if (choiceBtn.textContent === questions[questionNumber].answer) {
-                //     //     alert('you win!');
-                //     // };
-                //     alert(choiceID.textContent);
-                // });
             }
         }
-
-        // function compareChoice() {
-        //     for (var i = 0; i < questionChoices.length; i++) {
-        //         var choiceID = document.getElementById("choice-" + i);
-        //     }
-        // }
     </script>
 </body>
 </html>
