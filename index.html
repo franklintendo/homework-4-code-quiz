@@ -25,11 +25,18 @@
         <div class="row justify-content-center">
             <main class="col-8">
                 <h1 id="heading1" class="mb-3">Coding Quiz Challenge</h1>
+                <div id="enter-initials-menu" class="py-4 border-bottom" style="display: none;">
+                    <h3>Enter your initials</h3>
+                    <form>
+                        <input type="text" name="score" /><button>Submit</button>
+                    </form>
+                </div>
                 <div id="start-menu">
                     <p>Test your knowledge of Javascript by answering a series of questions.</p>
 
                     <button onclick="startQuiz()" class="btn btn-primary">Start the quiz</button>
                 </div>
+                
                 <div id="choices-menu">
 
                 </div>
@@ -44,6 +51,7 @@
         var startMenu = document.getElementById('start-menu');
         var questionHeading = document.getElementById('heading1');
         var gameClock = document.getElementById('game-clock');
+        var enterInitialsMenu = document.getElementById('enter-initials-menu');
 
         // Default numbers for the game
         // to start at first question, setting time, etc.
@@ -69,6 +77,8 @@
             // Hide the default start menu
             startMenu.setAttribute("style", "display: none;");
             choicesContent.setAttribute("style", "display: block");
+            enterInitialsMenu.setAttribute("style", "display: none;");
+            choicesContent.innerHTML = " ";
 
 
             // Start countdown clock
@@ -93,6 +103,23 @@
                 choicesContent.appendChild(choiceBtn);
 
             }
+        }
+
+        // Notify user that they got the answer right
+        function correctAnswer() {
+            var correctNotify = document.createElement("div");
+            correctNotify.setAttribute("class", "border-top mt-3 pt-3")
+            correctNotify.setAttribute("style", "font-size: 12px; color: green; font-weight: bold;");
+            correctNotify.textContent = "You got the answer right!";
+            choicesContent.appendChild(correctNotify);
+        }
+
+        // Notify user that they got the answer wrong
+        function incorrectAnswer() {
+            var incorrectNotify = document.createElement("div");
+            incorrectNotify.setAttribute("class", "border-top mt-3 pt-3");incorrectNotify.setAttribute("style", "font-size: 12px; color: red; font-weight: bold;");
+            incorrectNotify.textContent = "You got the answer wrong!";
+            choicesContent.appendChild(incorrectNotify);
         }
 
         // The timer that counts down when the game is started
@@ -124,11 +151,11 @@
             }, 1000);
         } 
 
+        
+
         // Add event to the button choices and see if what the 
         // user clicks matches the answer in the questions array
         document.addEventListener("click", function(event) {
-            // event.stopPropagation();
-            // event.preventDefault();
             if (event.target.matches('.choice-btn')) {
                 console.log(event.target.textContent);
                 event.stopPropagation();
@@ -136,11 +163,13 @@
                 // Condition if user selects correct answer
                 if (event.target.textContent === questions[questionNumber].answer) {
                     
+                    // Inform user that they got the right answer
 
                     // Move on to the next question
                     questionNumber = questionNumber + 1;
                     // Add time to the clock
                     gameTimer += 5;
+
 
                     if (questionNumber <= (numberOfQuestions - 1)) {
                         questionHeading.textContent = questions[questionNumber].title;
@@ -148,10 +177,13 @@
                             // and list new choices
                         choicesContent.innerHTML = " ";
                         listChoices();
+                        correctAnswer();
                         console.log("Question Number: " + questionNumber);
                     } else {
                         choicesContent.innerHTML = " ";
-                        choicesContent.setAttribute("display", "none");
+                        // choicesContent.setAttribute("display", "none");
+                        correctAnswer();
+                        enterInitialsMenu.setAttribute("style", "display: block;");
                         startMenu.setAttribute("style", "display: block;");
                         questionHeading.textContent = "Your score is: " +  gameTimer;
                         console.log("Question Number: " + questionNumber);
@@ -174,10 +206,13 @@
                             // and list new choices
                         choicesContent.innerHTML = " ";
                         listChoices();
+                        incorrectAnswer();
                         console.log("Question Number: " + questionNumber);
                     } else {
                         choicesContent.innerHTML = " ";
-                        choicesContent.setAttribute("display", "none");
+                        incorrectAnswer();
+                        enterInitialsMenu.setAttribute("style", "display: block;");
+                        // choicesContent.setAttribute("display", "none");
                         startMenu.setAttribute("style", "display: block;");
                         questionHeading.textContent = "Your score is: " +  gameTimer;
                         console.log("Question Number: " + questionNumber);
@@ -187,6 +222,12 @@
                 }
             }
         });
+
+
+        function enterHighScore(event) {
+            event.preventDefault();
+            
+        }
     </script>
 </body>
 </html>
