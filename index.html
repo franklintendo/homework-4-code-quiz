@@ -28,7 +28,7 @@
                 <div id="enter-initials-menu" class="py-4 border-bottom" style="display: none;">
                     <h3>Enter your initials</h3>
                     <form>
-                        <input type="text" name="score" /><button>Submit</button>
+                        <input id="initials-input" type="text" name="score" /><button id="submit-intials-btn">Submit</button>
                     </form>
                 </div>
                 <div id="start-menu">
@@ -52,6 +52,7 @@
         var questionHeading = document.getElementById('heading1');
         var gameClock = document.getElementById('game-clock');
         var enterInitialsMenu = document.getElementById('enter-initials-menu');
+        var enterInitialsBtn = document.getElementById('submit-intials-btn');
 
         // Default numbers for the game
         // to start at first question, setting time, etc.
@@ -64,6 +65,9 @@
 
         // 15 seconds for each question to determine total game time
         var gameTimer = numberOfQuestions * 15;
+
+        var finalScore;
+        var highScores = [];
 
         // console.log("Question Number: " + questionNumber);
         // console.log("Number of Questions: " + numberOfQuestions);
@@ -186,6 +190,7 @@
                         enterInitialsMenu.setAttribute("style", "display: block;");
                         startMenu.setAttribute("style", "display: block;");
                         questionHeading.textContent = "Your score is: " +  gameTimer;
+                        finalScore = gameTimer;
                         console.log("Question Number: " + questionNumber);
                     }
 
@@ -215,6 +220,7 @@
                         // choicesContent.setAttribute("display", "none");
                         startMenu.setAttribute("style", "display: block;");
                         questionHeading.textContent = "Your score is: " +  gameTimer;
+                        finalScore = gameTimer;
                         console.log("Question Number: " + questionNumber);
                     }
                     
@@ -224,10 +230,25 @@
         });
 
 
-        function enterHighScore(event) {
+        function enterInitials() {
             event.preventDefault();
+            var userInitals = document.getElementById('initials-input').value;
             
+            var userScores = {
+                initals: userInitals,
+                score: finalScore
+            };
+            highScores.push(userScores);
+            // console.log(highScores);
+            var highScoresString = JSON.stringify(highScores);
+
+            window.localStorage.setItem("high scores", highScoresString);
+
+            // console.log(userScores);
         }
+
+        enterInitialsBtn.addEventListener("click", enterInitials);
+
     </script>
 </body>
 </html>
