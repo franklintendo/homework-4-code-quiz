@@ -1,6 +1,6 @@
 var questions = [
     {
-      title: "Which method would you use to find an ID element in HTML",
+      title: "Which method would you use to find an ID element?",
       choices: ["getElementsById()", "getElementByID()", "getElementbyId()", "getElementsById()"],
       answer: "getElementbyId()"
     },

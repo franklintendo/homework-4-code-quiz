@@ -16,24 +16,96 @@
             <div class="col-12 col-md-6">
                 View High Score
             </div>
-            <div class="col-12 col-md-6 text-md-right">
-                Time: XX
+            <div id="game-clock-container" class="col-12 col-md-6 text-md-right">
+                Time: <span id="game-clock">XX</span>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="row justify-content-center">
             <main class="col-8">
-                <h1 id="heading1">Coding Quiz Challenge</h1>
-                <p>Test your knowledge of Javascript by answering a series of questions.</p>
+                <h1 id="heading1" class="mb-3">Coding Quiz Challenge</h1>
+                <div id="start-menu">
+                    <p>Test your knowledge of Javascript by answering a series of questions.</p>
 
-                <button class="btn btn-primary">Start the quiz</button>
+                    <button onclick="startQuiz()" class="btn btn-primary">Start the quiz</button>
+                </div>
             </main>
         </div>
     </div>
     <script type="text/javascript" src="assets/questions.js"></script>
     <script>
 
+        // Variables of elements, array data, etc. 
+        // referred to in the functions
+        var numberOfQuestions = questions.length;
+        var mainContent = document.querySelector("main");
+        var startMenu = document.getElementById('start-menu');
+        var questionHeading = document.getElementById('heading1');
+        var questionNumber = 0;
+        var questionChoices = questions[questionNumber].choices;
+
+        // Function for when user clicks the start button
+        function startQuiz() {
+            startMenu.setAttribute("style", "display: none;");
+            // console.log(questionChoices);
+
+            questionHeading.textContent = questions[questionNumber].title;
+            listChoices();
+
+            document.addEventListener("click", function(event) {
+                if (event.target.matches('.choice-btn')) {
+                    // alert(event.target.textContent);
+                    if (event.target.textContent === questions[questionNumber].answer) {
+                        alert('you win!');
+                        questionNumber++;
+                        questionHeading.textContent = questions[questionNumber].title;
+                        listChoices();
+                    } else {
+                        alert('you lose!');
+                        questionNumber++;
+                        questionHeading.textContent = questions[questionNumber].title;
+                        listChoices();
+                    }
+                }
+            });
+            
+            
+            
+            
+        }
+
+        function listChoices() {
+            // Loop through the available choices in
+            // the given question array index
+            for (var i = 0; i < questionChoices.length; i++) {
+                // Create, build, and place the available choices
+                var choiceBtn = document.createElement("button");
+                choiceBtn.setAttribute("class", "btn btn-primary btn-sm d-block my-2 choice-btn");
+                choiceBtn.setAttribute("id", "choice-" + i );
+                choiceBtn.textContent = questions[questionNumber].choices[i];
+                mainContent.appendChild(choiceBtn);
+
+                // var choiceID = document.getElementById("choice-" + i);
+
+                // console.log(choiceID);
+                // console.log(choiceBtn.textContent);
+                // console.log(questions[questionNumber].answer);
+
+                // choiceBtn.addEventListener("click", function() {
+                //     // if (choiceBtn.textContent === questions[questionNumber].answer) {
+                //     //     alert('you win!');
+                //     // };
+                //     alert(choiceID.textContent);
+                // });
+            }
+        }
+
+        // function compareChoice() {
+        //     for (var i = 0; i < questionChoices.length; i++) {
+        //         var choiceID = document.getElementById("choice-" + i);
+        //     }
+        // }
     </script>
 </body>
 </html>
