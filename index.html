@@ -43,56 +43,97 @@
         var choicesContent = document.querySelector("#choices-menu");
         var startMenu = document.getElementById('start-menu');
         var questionHeading = document.getElementById('heading1');
+        var gameClock = document.getElementById('game-clock');
+
+        // Default numbers for the game
+        // to start at first question, setting time, etc.
+        var questionNumber = 0;
 
         // Variable containing question array data
         // referred to in the functions
         var numberOfQuestions = questions.length;
         var questionChoices = questions[questionNumber].choices;
 
-        // Default numbers for the game
-        // to start at first question, setting time, etc.
-        var questionNumber = 0;
+        // 15 seconds for each question to determine total game time
+        var gameTimer = numberOfQuestions * 15;
+
+        
        
         // Function for when user clicks the start button
         function startQuiz() {
 
             // Hide the default start menu
             startMenu.setAttribute("style", "display: none;");
+            choicesContent.setAttribute("style", "display: block");
+
+            // Start countdown clock
+            countdownClock();
 
             // Place first question in h1 and create buttons
             // of the multiple choice answers below
             questionHeading.textContent = questions[questionNumber].title;
             listChoices();
 
+            
+            // if (questionNumber > (numberOfQuestions - 1)) {
+            //     choicesContent.innerHTML = " ";
+            //     questionNumber = 0;
+            //     choicesContent.setAttribute("display", "none");
+            //     startMenu.setAttribute("style", "display: block;");
+            // }
+
+
             // Add event to the button choices and see if what the 
             // user clicks matches the answer in the questions array
             document.addEventListener("click", function(event) {
                 if (event.target.matches('.choice-btn')) {
-                    
                     // Condition if user selects correct answer
                     if (event.target.textContent === questions[questionNumber].answer) {
+                        console.log(questions[questionNumber].answer);
                         // Move on to the next question
                         questionNumber++;
-                        questionHeading.textContent = questions[questionNumber].title;
-                        // Run function to clear buttons
-                        // and list new choices
-                        choicesContent.innerHTML = " ";
-                        listChoices();
+            
+                        if (questionNumber <= (numberOfQuestions - 1)) {
+                            questionHeading.textContent = questions[questionNumber].title;
+                             // Run function to clear buttons
+                             // and list new choices
+                            choicesContent.innerHTML = " ";
+                            listChoices();
+                        } else {
+                            choicesContent.innerHTML = " ";
+                            questionNumber = 0;
+                            choicesContent.setAttribute("display", "none");
+                            startMenu.setAttribute("style", "display: block;");
+                        }
+
+                        // Add time to the clock
+                        gameTimer += 5;
                     } 
                     // Condition if user selects wrong answer
-                    else {
+                    else if (event.target.textContent !== questions[questionNumber].answer) {
+                        console.log(questions[questionNumber].answer);
                         // Move on to the next question
                         questionNumber++;
-                        questionHeading.textContent = questions[questionNumber].title;
-                        // Run function to clear buttons
-                        // and list new choices
-                        choicesContent.innerHTML = " ";
-                        listChoices();
+
+                        if (questionNumber <= (numberOfQuestions - 1)) {
+                            questionHeading.textContent = questions[questionNumber].title;
+                             // Run function to clear buttons
+                             // and list new choices
+                            choicesContent.innerHTML = " ";
+                            listChoices();
+                        } else {
+                            choicesContent.innerHTML = " ";
+                            questionNumber = 0;
+                            choicesContent.setAttribute("display", "none");
+                            startMenu.setAttribute("style", "display: block;");
+                        }
+                        
+                        // Remove time from the clock
+                        gameTimer -= 5;
                     }
                 }
             });
-            
-            
+
             
             
         }
@@ -110,6 +151,20 @@
 
             }
         }
+
+        // The timer that counts down when the game is started
+        function countdownClock() {
+            var timerInterval = setInterval(function() {
+                gameClock.textContent = gameTimer;
+                gameTimer--
+
+                // Once the timer hits zero, game is ended
+                if(gameTimer <= 0 || questionNumber < (numberOfQuestions - 1)) {
+                    clearInterval(timerInterval);
+                }
+
+            }, 1000);
+        } 
     </script>
 </body>
 </html>
