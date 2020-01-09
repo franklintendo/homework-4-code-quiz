@@ -56,7 +56,6 @@
 
         // 15 seconds for each question to determine total game time
         var gameTimer = numberOfQuestions * 15;
-        // var gameTimer = numberOfQuestions;
 
         // console.log("Question Number: " + questionNumber);
         // console.log("Number of Questions: " + numberOfQuestions);
@@ -69,7 +68,10 @@
             startMenu.setAttribute("style", "display: none;");
             choicesContent.setAttribute("style", "display: block");
 
-            // var gameTimer = numberOfQuestions * 15;
+            // Reset variables (time, question that game starts on)
+            // When start button is pressed
+            gameTimer = numberOfQuestions * 15;
+            questionNumber = 0;
 
             // Start countdown clock
             countdownClock();
@@ -100,7 +102,8 @@
                             listChoices();
                         } else {
                             choicesContent.innerHTML = " ";
-                            questionNumber = 0;
+                            // Freeze clock if user runs through all the questions
+                            questionNumber = -999;
                             choicesContent.setAttribute("display", "none");
                             startMenu.setAttribute("style", "display: block;");
                             questionHeading.textContent = "Your score is: " +  gameTimer;
@@ -124,7 +127,8 @@
                             listChoices();
                         } else {
                             choicesContent.innerHTML = " ";
-                            questionNumber = 0;
+                            // Freeze clock if user runs through all the questions
+                            questionNumber = -999;
                             choicesContent.setAttribute("display", "none");
                             startMenu.setAttribute("style", "display: block;");
                             questionHeading.textContent = "Your score is: " +  gameTimer;
@@ -156,11 +160,10 @@
         // The timer that counts down when the game is started
         function countdownClock() {
             var timerInterval = setInterval(function() {
+                // Display time and decrease by second
                 gameClock.textContent = gameTimer;
                 gameTimer--;
 
-                console.log("Question Number: " + questionNumber);
-                console.log("Number of Questions: " + numberOfQuestions);
 
                 // Once the timer hits zero, game is ended
                 if (gameTimer <= 0) {
@@ -171,9 +174,11 @@
                     choicesContent.setAttribute("display", "none");
                     startMenu.setAttribute("style", "display: block;");
                     questionHeading.textContent = "Your score is: " +  gameTimer;
-                } else if (questionNumber > (numberOfQuestions - 1)) {
+                } 
+                // Freeze clock if user runs through all the questions
+                else if (questionNumber === -999) {
                     clearInterval(timerInterval);
-                    alert('No more questions available');
+                    
                 }
 
             }, 1000);
