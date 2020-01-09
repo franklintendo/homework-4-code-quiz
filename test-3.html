@@ -28,10 +28,10 @@
                 <div id="start-menu">
                     <p>Test your knowledge of Javascript by answering a series of questions.</p>
 
-                    <button onclick="startQuiz()" class="btn btn-primary">Start the quiz</button>
+                    <button id="start-button" onclick="startQuiz()" class="btn btn-primary">Start the quiz</button>
                 </div>
                 <div id="choices-menu">
-
+                    
                 </div>
             </main>
         </div>
@@ -42,6 +42,7 @@
         // Variables of elements on page
         var choicesContent = document.querySelector("#choices-menu");
         var startMenu = document.getElementById('start-menu');
+        var startBtn = document.getElementById('start-button');
         var questionHeading = document.getElementById('heading1');
         var gameClock = document.getElementById('game-clock');
 
@@ -60,7 +61,13 @@
         // console.log("Question Number: " + questionNumber);
         // console.log("Number of Questions: " + numberOfQuestions);
         
-       
+    //    startBtn.addEventListener("click", function(event) {
+    //         if (questionNumber === 0) {
+    //             startQuiz();
+    //             return;
+    //         }
+    //    });
+
         // Function for when user clicks the start button
         function startQuiz() {
 
@@ -125,68 +132,69 @@
         } 
 
         // Add event to the button choices and see if what the 
-        // user clicks matches the answer in the questions array
-        document.addEventListener("click", function(event) {
-            // event.stopPropagation();
-            // event.preventDefault();
-            if (event.target.matches('.choice-btn')) {
-                console.log(event.target.textContent);
-                event.stopPropagation();
-                event.preventDefault();
-                // Condition if user selects correct answer
-                if (event.target.textContent === questions[questionNumber].answer) {
-                    
+            // user clicks matches the answer in the questions array
+            document.addEventListener("click", function(event) {
+                // event.stopPropagation();
+                // event.preventDefault();
+                if (event.target.matches('.choice-btn')) {
+                    console.log(event.target.textContent);
+                    // event.stopPropagation();
+                    // event.preventDefault();
+                    // Condition if user selects correct answer
+                    if (event.target.textContent === questions[questionNumber].answer) {
+                        
 
-                    // Move on to the next question
-                    questionNumber = questionNumber + 1;
-                    // Add time to the clock
-                    gameTimer += 5;
+                        // Move on to the next question
+                        questionNumber = questionNumber + 1;
+                        // Add time to the clock
+                        gameTimer += 5;
 
-                    if (questionNumber <= (numberOfQuestions - 1)) {
-                        questionHeading.textContent = questions[questionNumber].title;
-                            // Run function to clear buttons
-                            // and list new choices
-                        choicesContent.innerHTML = " ";
-                        listChoices();
-                        console.log("Question Number: " + questionNumber);
-                    } else {
-                        choicesContent.innerHTML = " ";
-                        choicesContent.setAttribute("display", "none");
-                        startMenu.setAttribute("style", "display: block;");
-                        questionHeading.textContent = "Your score is: " +  gameTimer;
-                        console.log("Question Number: " + questionNumber);
+                        if (questionNumber <= (numberOfQuestions - 1)) {
+                            questionHeading.textContent = questions[questionNumber].title;
+                             // Run function to clear buttons
+                             // and list new choices
+                            choicesContent.innerHTML = " ";
+                            listChoices();
+                            console.log("Question Number: " + questionNumber);
+                        } else {
+                            choicesContent.innerHTML = " ";
+                            choicesContent.setAttribute("display", "none");
+                            startMenu.setAttribute("style", "display: block;");
+                            questionHeading.textContent = "Your score is: " +  gameTimer;
+                            console.log("Question Number: " + questionNumber);
+                        }
+
+                        
+                    } 
+                    // Condition if user selects wrong answer
+                    else if (event.target.textContent !== questions[questionNumber].answer) {
+                        
+                        // console.log(questions[questionNumber].answer);
+                        // Move on to the next question
+                        questionNumber = questionNumber + 1;
+                        // Remove time from the clock
+                        gameTimer -= 15;
+
+                        if (questionNumber <= (numberOfQuestions - 1)) {
+                            questionHeading.textContent = questions[questionNumber].title;
+                             // Run function to clear buttons
+                             // and list new choices
+                            choicesContent.innerHTML = " ";
+                            listChoices();
+                            console.log("Question Number: " + questionNumber);
+                        } else {
+                            choicesContent.innerHTML = " ";
+                            choicesContent.setAttribute("display", "none");
+                            startMenu.setAttribute("style", "display: block;");
+                            questionHeading.textContent = "Your score is: " +  gameTimer;
+                            console.log("Question Number: " + questionNumber);
+                        }
+                        
+                        
                     }
-
-                    
-                } 
-                // Condition if user selects wrong answer
-                else if (event.target.textContent !== questions[questionNumber].answer) {
-                    
-                    // console.log(questions[questionNumber].answer);
-                    // Move on to the next question
-                    questionNumber = questionNumber + 1;
-                    // Remove time from the clock
-                    gameTimer -= 15;
-
-                    if (questionNumber <= (numberOfQuestions - 1)) {
-                        questionHeading.textContent = questions[questionNumber].title;
-                            // Run function to clear buttons
-                            // and list new choices
-                        choicesContent.innerHTML = " ";
-                        listChoices();
-                        console.log("Question Number: " + questionNumber);
-                    } else {
-                        choicesContent.innerHTML = " ";
-                        choicesContent.setAttribute("display", "none");
-                        startMenu.setAttribute("style", "display: block;");
-                        questionHeading.textContent = "Your score is: " +  gameTimer;
-                        console.log("Question Number: " + questionNumber);
-                    }
-                    
-                    
                 }
-            }
-        });
+            });
+
     </script>
 </body>
 </html>
