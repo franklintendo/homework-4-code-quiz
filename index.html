@@ -12,19 +12,19 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 col-md-6">
+        <div class="row mb-3">
+            <div class="col-auto">
                 <a href="#" id="high-scores-link" onclick="viewHighScores()">View High Scores</a>
                 <a href="#" id="back-to-start-link" onclick="goBackToStart()" style="display: none;">Go Back to Start</a>
             </div>
-            <div id="game-clock-container" class="col-12 col-md-6 text-md-right">
+            <div id="game-clock-container" class="col text-right">
                 Time: <span id="game-clock">0</span>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="row justify-content-center">
-            <main class="col-8">
+            <main class="col-12 col-md-8">
                 <h1 id="heading1" class="mb-3">Coding Quiz Challenge</h1>
                 <div id="enter-initials-menu" class="py-4 mb-3 border-bottom" style="display: none;">
                     <h3>Enter your initials</h3>
@@ -105,6 +105,7 @@
             choicesContent.setAttribute("style", "display: block");
             enterInitialsMenu.setAttribute("style", "display: none;");
             choicesContent.innerHTML = " ";
+            viewHighScoresLink.setAttribute("style", "display: none;");
 
 
             // Start countdown clock
@@ -216,6 +217,7 @@
                         enterInitialsMenu.setAttribute("style", "display: block;");
                         // Allow user to restart quiz
                         startMenu.setAttribute("style", "display: block;");
+                        viewHighScoresLink.setAttribute("style", "display: inline;");
                         // Display the user's final score
                         questionHeading.textContent = "Your score is: " +  gameTimer;
                         // User's final score is equal to the time left in the game
@@ -249,6 +251,7 @@
                         enterInitialsMenu.setAttribute("style", "display: block;");
                         // Allow user to restart quiz
                         startMenu.setAttribute("style", "display: block;");
+                        viewHighScoresLink.setAttribute("style", "display: inline;");
                         // Display the user's final score
                         questionHeading.textContent = "Your score is: " +  gameTimer;
                         // User's final score is equal to the time left in the game
@@ -311,8 +314,8 @@
             choicesContent.setAttribute("style", "display: none");
             enterInitialsMenu.setAttribute("style", "display: none;");
             questionHeading.textContent = "View High Scores";
-            backToStartLink.setAttribute("style", "display: inline;")
-            viewHighScoresLink.setAttribute("style", "display: none;")
+            backToStartLink.setAttribute("style", "display: inline;");
+            viewHighScoresLink.setAttribute("style", "display: none;");
 
 
             // Grab the high scores from user's local storage
