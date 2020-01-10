@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-md-6">
-                View High Scores
+                <a href="#" onclick="viewHighScores()">View High Scores</a>
             </div>
             <div id="game-clock-container" class="col-12 col-md-6 text-md-right">
                 Time: <span id="game-clock">0</span>
@@ -40,6 +40,10 @@
                 <div id="choices-menu">
 
                 </div>
+
+                <div id="scores-menu">
+
+                </div>
             </main>
         </div>
     </div>
@@ -53,6 +57,7 @@
         var gameClock = document.getElementById('game-clock');
         var enterInitialsMenu = document.getElementById('enter-initials-menu');
         var enterInitialsBtn = document.getElementById('submit-intials-btn');
+        var scoresMenu = document.getElementById('scores-menu');
 
         // Default numbers for the game
         // to start at first question, setting time, etc.
@@ -69,17 +74,31 @@
         var finalScore;
         var highScores = [];
 
-        // console.log("Question Number: " + questionNumber);
-        // console.log("Number of Questions: " + numberOfQuestions);
+        // Check to see if there is an existing array of 
+        // high scores in the localStorage
+        renderHighScores()
+
+        function renderHighScores() {
+            var savedHighScores = localStorage.getItem("high scores");
+            
+            if (savedHighScores === null) {
+                return;
+            }
+            var objectScores = JSON.parse(savedHighScores);
+            // console.log("Saved High Scores: " + savedHighScores);
+            highScores = objectScores;
+            
+        }
         
        
         // Function for when user clicks the start button
         function startQuiz() {
 
-            console.log("Question Number: " + questionNumber);
+            // console.log("Question Number: " + questionNumber);
 
             // Hide the default start menu
             startMenu.setAttribute("style", "display: none;");
+            scoresMenu.setAttribute("style", "display: none;");
             choicesContent.setAttribute("style", "display: block");
             enterInitialsMenu.setAttribute("style", "display: none;");
             choicesContent.innerHTML = " ";
@@ -161,7 +180,7 @@
         // user clicks matches the answer in the questions array
         document.addEventListener("click", function(event) {
             if (event.target.matches('.choice-btn')) {
-                console.log(event.target.textContent);
+                // console.log(event.target.textContent);
                 event.stopPropagation();
                 event.preventDefault();
                 // Condition if user selects correct answer
@@ -182,7 +201,7 @@
                         choicesContent.innerHTML = " ";
                         listChoices();
                         correctAnswer();
-                        console.log("Question Number: " + questionNumber);
+                        // console.log("Question Number: " + questionNumber);
                     } else {
                         choicesContent.innerHTML = " ";
                         // choicesContent.setAttribute("display", "none");
@@ -191,7 +210,7 @@
                         startMenu.setAttribute("style", "display: block;");
                         questionHeading.textContent = "Your score is: " +  gameTimer;
                         finalScore = gameTimer;
-                        console.log("Question Number: " + questionNumber);
+                        // console.log("Question Number: " + questionNumber);
                     }
 
                     
@@ -212,7 +231,7 @@
                         choicesContent.innerHTML = " ";
                         listChoices();
                         incorrectAnswer();
-                        console.log("Question Number: " + questionNumber);
+                        // console.log("Question Number: " + questionNumber);
                     } else {
                         choicesContent.innerHTML = " ";
                         incorrectAnswer();
@@ -221,7 +240,7 @@
                         startMenu.setAttribute("style", "display: block;");
                         questionHeading.textContent = "Your score is: " +  gameTimer;
                         finalScore = gameTimer;
-                        console.log("Question Number: " + questionNumber);
+                        // console.log("Question Number: " + questionNumber);
                     }
                     
                     
@@ -230,24 +249,76 @@
         });
 
 
-        function enterInitials() {
+        function enterInitials(event) {
             event.preventDefault();
-            var userInitals = document.getElementById('initials-input').value;
+            // Take the value the user enters into the input after game ends
+            var userInitials = document.getElementById('initials-input').value;
             
+            // Object containing the user initials and final score
             var userScores = {
-                initals: userInitals,
+                initials: userInitials,
                 score: finalScore
             };
+
+            // Push the above object into the high scores array
             highScores.push(userScores);
             // console.log(highScores);
+
+            // Convert the object into a string
             var highScoresString = JSON.stringify(highScores);
 
+            // Store the string into the user's local storage
             window.localStorage.setItem("high scores", highScoresString);
 
             // console.log(userScores);
         }
 
+        // When user clicks submit, enter their score
+        // and their initials to their local Storage
         enterInitialsBtn.addEventListener("click", enterInitials);
+
+        function viewHighScores() {
+            startMenu.setAttribute("style", "display: none;");
+            scoresMenu.setAttribute("style", "display: block;");
+            choicesContent.setAttribute("style", "display: none");
+            enterInitialsMenu.setAttribute("style", "display: none;");
+            questionHeading.textContent = "View High Scores";
+            var highScoreList = window.localStorage.getItem("high scores");
+            console.log(highScoreList);
+
+            var highScoreObject = JSON.parse(highScoreList);
+
+            // var orderedScores = highScoreObject.sort(highestToLowest);
+
+
+
+            // console.log(highScoreObject);
+
+            // console.log(orderedScores);
+
+            for (var i=0;i <= highScoreObject.length - 1;i++){
+                var highScoreEntry = document.createElement("div");
+                highScoreEntry.setAttribute("class", "alert alert-info");
+                highScoreEntry.innerHTML = "<span style='font-weight: bold;''>" +  highScoreObject[i].initials + ":</span> " + highScoreObject[i].score;
+                scoresMenu.appendChild(highScoreEntry);
+
+            }
+        }
+
+    // function highestToLowest(x,y) {
+    //     var scoreX = x.score;
+    //     var scoreY = y.score;
+
+    //     var comparison = 0;
+    //     if (scoreX > scoreY) {
+    //         comparison = 1;
+    //     } else if (scoreX < scoreY) {
+    //         comparison = -1;
+    //     }
+    //     return comparison * -1;
+    // }
+
+    
 
     </script>
 </body>
