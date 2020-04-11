@@ -1,6 +1,6 @@
 # Unit 04 Web APIs Homework: Code Quiz
 
-This is a quiz game about Javascript featuring ten questions. Link to project: < href="https://franklintendo.github.io/homework-4-code-quiz/" target="_blank">Click here</a>
+This is a quiz game about Javascript featuring ten questions. Link to project: <a href="https://franklintendo.github.io/homework-4-code-quiz/" target="_blank">Click here</a>
 
 
 ## About
